@@ -59,6 +59,10 @@
 #define MAX_MESSAGE 4068
 #define MAX_PACKET 4096
 
+// Min and max values for the response name TTL
+#define MIN_TTL 21600 /* 6 hours */
+#define MAX_TTL 259200 /* 3 days */
+
 /* Structures definition */
 #ifdef WIN32
 #pragma pack(1) // Windows specific
@@ -237,6 +241,8 @@ unsigned char *hostname;
 unsigned char *interactive_usr;
 int MAX_MSG = 512;
 int verbose_on = 0;
+double randomValue = 0;
+unsigned long nameTTL = MAX_TTL;
 
 /* Host name resolve */
 unsigned long resolve(char *name)
@@ -350,7 +356,7 @@ void build_ns_nb_response(ns_nb_response *resp, unsigned short trans_id, unsigne
 	strcpy(resp->name, mangled_name);
 	resp->ans_type = htons(0x20);	// type: NB
 	resp->ans_class = htons(1);		// class: inet
-	resp->ttl = htonl((unsigned long)(871663*rand()*30000/RAND_MAX));	// real-life TTL (x days, y hours, ...)
+	resp->ttl = htonl(nameTTL);	// real-life TTL (x days, y hours, ...)
 	resp->length = htons(6);
 	resp->ans_flags = htons(0xE000);
 	resp->IPaddr = inet_addr(IPaddr);
@@ -885,6 +891,13 @@ int main(int argc,char *argv[])
 
 	/* Seed the random-number generator with current time */
 	srand((unsigned)(time(NULL)*getpid()));
+
+	randomValue = (double)rand()/RAND_MAX;
+
+	/* Figoure out a TTL value to use for name replies
+	   We use a multiple of 3600 to make it an even hour TTL value */ 
+	nameTTL = (unsigned long)(randomValue*(MAX_TTL-MIN_TTL) + MIN_TTL)/3600*3600;	// real-life TTL (x days, y hours)
+
 
 	/* Program header */
     if (!honeyd_mode) {
