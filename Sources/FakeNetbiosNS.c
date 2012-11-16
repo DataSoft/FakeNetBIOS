@@ -753,10 +753,10 @@ int udp_listen(char *msg, int *bytesreceived, unsigned long sourceIP, unsigned s
 void usage(char *name)
 {
 	/* Program header */
-    printf("\n-----------\n");
-    printf("%s V.0.92\n", name);
-    printf("Patrick Chambet - patrick@chambet.com\n");
-    printf("-----------\n\n");
+	printf("\n-----------\n");
+	printf("%s V.0.92\n", name);
+	printf("Patrick Chambet - patrick@chambet.com\n");
+	printf("-----------\n\n");
 	printf("Simulation of NetBIOS hosts (Windows-like) on NetBIOS Name Service (NS)\n");
 	printf("Honeyd responder or full UDP server mode\n");
 	printf("\n");
@@ -848,44 +848,44 @@ int main(int argc,char *argv[])
 
 	/* Get params */
 	while ((c = getopt (argc, argv, "s:d:D:N:f:r:vHh?")) != -1)
-    {
-      switch (c)
-        {
-        case 's':
-          listen_sourceIP = optarg;
-		  send_sourceIP = optarg;
-          break;
-        case 'd':
-          targetIP = optarg;
-          break;
-        case 'D':
-          strcpy(domainname, optarg); // Cut at 15 char ? Try yourself...
-          break;
-        case 'N':
-          strcpy(hostname, optarg); // Cut at 15 char ? Try yourself...
-          break;
-        case 'f':
-		  confpath = (unsigned char*)malloc(sizeof(unsigned char)*strlen(optarg));
-		  strcpy(confpath, optarg);
-          conffile_mode = 1;
-          break;
-        case 'r':
-          release_mode = 1;
-		  sscanf(optarg, "%x", &nbsvc);
-          break;
-        case 'v':
-          verbose_on = 1;
-          break;
-        case 'H':
-          honeyd_mode = 1;
-          break;
-        case 'h':
-        case '?':
-        default:
-          showusage = 1;
-          break;
-        }
-    }
+	{
+		switch (c)
+		{
+			case 's':
+				listen_sourceIP = optarg;
+				send_sourceIP = optarg;
+				break;
+			case 'd':
+				targetIP = optarg;
+				break;
+			case 'D':
+				strcpy(domainname, optarg); // Cut at 15 char ? Try yourself...
+				break;
+			case 'N':
+				strcpy(hostname, optarg); // Cut at 15 char ? Try yourself...
+				break;
+			case 'f':
+				confpath = (unsigned char*)malloc(sizeof(unsigned char)*strlen(optarg));
+				strcpy(confpath, optarg);
+				conffile_mode = 1;
+				break;
+			case 'r':
+				release_mode = 1;
+				sscanf(optarg, "%x", &nbsvc);
+				break;
+			case 'v':
+				verbose_on = 1;
+				break;
+			case 'H':
+				honeyd_mode = 1;
+				break;
+			case 'h':
+			case '?':
+			default:
+				showusage = 1;
+				break;
+		}
+	}
 
 	if (showusage)
 		usage(appname);
@@ -901,7 +901,7 @@ int main(int argc,char *argv[])
 
 
 	/* Program header */
-    if (!honeyd_mode) {
+	if (!honeyd_mode) {
 		printf("\n-----------\n");
 		printf("%s V.0.92\n", appname);
 		printf("Patrick Chambet - patrick@chambet.com\n");
