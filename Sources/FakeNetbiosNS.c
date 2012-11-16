@@ -1,6 +1,7 @@
 /*
 * FakeNetbiosNS 0.92
 *
+* Copyright 2012 Datasoft Cooperation
 * Copyright 2004-2005 Patrick Chambet <patrick@chambet.com>
 *
 * Greetings to:
@@ -753,7 +754,7 @@ void usage(char *name)
 {
 	/* Program header */
     printf("\n-----------\n");
-    printf("%s V.0.9\n", name);
+    printf("%s V.0.92\n", name);
     printf("Patrick Chambet - patrick@chambet.com\n");
     printf("-----------\n\n");
 	printf("Simulation of NetBIOS hosts (Windows-like) on NetBIOS Name Service (NS)\n");
@@ -902,7 +903,7 @@ int main(int argc,char *argv[])
 	/* Program header */
     if (!honeyd_mode) {
 		printf("\n-----------\n");
-		printf("%s V.0.9\n", appname);
+		printf("%s V.0.92\n", appname);
 		printf("Patrick Chambet - patrick@chambet.com\n");
 		printf("-----------\n\n");
 	}
