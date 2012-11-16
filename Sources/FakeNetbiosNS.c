@@ -1,5 +1,5 @@
 /*
-* FakeNetbiosNS 0.91
+* FakeNetbiosNS 0.92
 *
 * Copyright 2004-2005 Patrick Chambet <patrick@chambet.com>
 *
@@ -230,6 +230,7 @@ unsigned char *appname = "FakeNetbiosNS";
 unsigned char *listen_sourceIP = "127.0.0.1";
 unsigned char *send_sourceIP = "127.0.0.1";
 unsigned char *targetIP = "255.255.255.255";
+unsigned long targetPort = 137;
 unsigned char *domainname;
 signed   long hostnum = 1;
 unsigned char *hostname;
@@ -351,7 +352,7 @@ void build_ns_nb_response(ns_nb_response *resp, unsigned short trans_id, unsigne
 	resp->ans_class = htons(1);		// class: inet
 	resp->ttl = htonl((unsigned long)(871663*rand()*30000/RAND_MAX));	// real-life TTL (x days, y hours, ...)
 	resp->length = htons(6);
-	resp->ans_flags = 0;
+	resp->ans_flags = htons(0xE000);
 	resp->IPaddr = inet_addr(IPaddr);
 }
 
@@ -727,6 +728,7 @@ int udp_listen(char *msg, int *bytesreceived, unsigned long sourceIP, unsigned s
 	}
 	else {
 		targetIP = inet_ntoa(cliAddr.sin_addr);
+		targetPort = ntohs(cliAddr.sin_port);
 		if (verbose_on)
 			printf("Connection from %s:UDP%u :\n", targetIP, ntohs(cliAddr.sin_port));
 	}
@@ -947,7 +949,7 @@ int main(int argc,char *argv[])
 
 		/* Send packet */
 		printf("Releasing '%s<%02x>'\n", hostname, nbsvc);
-		send_raw_ip_udp(resolve(send_sourceIP), 137, resolve(targetIP), 137, sendbuf, bufLen);
+		send_raw_ip_udp(resolve(send_sourceIP), 137, resolve(targetIP), targetPort, sendbuf, bufLen);
 
 #ifdef WIN32
 		/* Cleanup Winsock before leaving */
@@ -1115,7 +1117,7 @@ int main(int argc,char *argv[])
 			}
 			else {
 				printf("Responding for host '%s' \n", hostname);
-				send_raw_ip_udp(resolve(send_sourceIP), 137, resolve(targetIP), 137, sendbuf, bufLen);
+				send_raw_ip_udp(resolve(send_sourceIP), 137, resolve(targetIP), targetPort, sendbuf, bufLen);
 				if (verbose_on) {
 					printf("Bytes sent [%d]:\n", bufLen);
 					hexdump(sendbuf, bufLen);
