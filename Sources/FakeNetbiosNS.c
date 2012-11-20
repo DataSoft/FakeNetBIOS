@@ -930,15 +930,6 @@ int main(int argc,char *argv[])
 				printf("Dom: '%s'\tHost: '%s'\tIP: '%s'\tUser: '%s'\n", domains[i], hosts[i], ipaddr[i], users[i]);
 		}
 	}
-	else if (honeyd_mode) {
-		/* If in honeyd, compute the correct hostname to use */
-		if (sizeof(hostname) < 11*sizeof(char)) {
-			/* Get last number of IP address */
-			char *tmp = strrchr(listen_sourceIP, '.');
-			tmp+=sizeof(char);
-			strcat(hostname, tmp);
-		}
-	}
 
 #ifdef WIN32
 	/* Winsock initialization */
